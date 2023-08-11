@@ -5,34 +5,43 @@
 
 int		ft_strlen(const char *str);
 void	ft_putstr_fd(char *s, int fd);
+int	ft_strcmp(const char *s1, const char *s2);
 
-void		echo(char **args)
+int	num_of_args(char **args)
+{
+	int 	size;
+
+	size = 0;
+	while (args[size])
+		size++;
+	return (size);
+}
+
+int		echo(char **args)
 {
 	int i;
 	int n_flag;
 
+	i = 1;
 	n_flag = 0;
-	if (!args[0])
+	if (num_of_args(args) > 1)
 	{
-		perror("\n");
-		exit (1);
-	}
-	else if (args[0][0] == '-' && args[0][1] == 'n' && args[0][2] == '\0')
-		n_flag = 1;
-	i = -1;
-	if (n_flag)
-		i++;
-	while (args[++i])
-	{
-		int pos;
-		pos = 0;
-		while (args[i][pos] != '\0')
+		while (args[i] && ft_strcmp(args[i], "-n") == 0)
 		{
-			write (1, &args[i][pos++], 1);
+			n_flag = 1;
+			i++;
 		}
-		if (!args[i + 1] && !n_flag)
-			write (1, "\n", 1);
+		while (args[i])
+		{
+			ft_putstr_fd(args[i], 1);
+			if (args[i + 1] && args[i][0] != '\0')
+				write (1, " ", 1);
+			i++;
+		}
 	}
+	if (n_flag == 0)
+		write (1, "\n", 1);
+	return (0);
 }
 
 void	ft_putstr_fd(char *s, int fd)
@@ -59,6 +68,20 @@ int	ft_strlen(const char *str)
 		n++;
 	}
 	return (n);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] == s2[i])
+	{
+		if (s1[i] == '\0' && s2[i] == '\0')
+			return (0);
+		i++;
+	}
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
 int main(int ac, char **av)
