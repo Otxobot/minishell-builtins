@@ -16,4 +16,9 @@ typedef struct	s_env
 	struct s_env	*next;
 }				t_env;
 
+
+void	getenv1(char	**envp, t_env *env);
+void	cd(char **str, t_env *env);
+t_env  *make_node(void);
+
 #endif

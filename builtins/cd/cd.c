@@ -1,20 +1,16 @@
 #include "../../builtins.h"
-#include <unistd.h>
 
-void	cd(char **str, t_env *env);
-void	getenv1(char	**envp, t_env *env);
-t_env  *make_node(void);
+//void	cd(char **str, t_env *env);
+//void	getenv1(char	**envp, t_env *env);
+//t_env  *make_node(void);
 
 int main(int ac, char **av, char **envp)
 {
 	t_env	*env;
 
 	//char *s[] ={"ls", "-l",  NULL};
-	int n = 0;
-	while (envp[n])
-	{
-		printf("%s\n", envp[n++]);
-	}
+	// int n = 0;
+	env = make_node();
 	getenv1(envp, env);
 	cd(av, env);
 	//getenv(envp, env);
@@ -35,21 +31,15 @@ void	cd(char **str, t_env *env)
 void	getenv1(char	**envp, t_env *env)
 {
 	int 	line;
-	int		letter;
 
 	line = 0;
-	letter = 0;
 	while (envp[line])
 	{
 		printf("%s\n", envp[line++]);
 	}
 	line = 0;
-	env = make_node();
 	while (envp[line])
 	{
-	// 	printf("line: %d\n", line);
-	// 	printf("%ld\n", ft_strchr(envp[line], '=') - envp[line]);
-	// 	printf("%s\n",ft_substr(envp[line], 0, ft_strchr(envp[line], '=') - envp[line]));
 		env->name = ft_substr(envp[line], 0, ft_strchr(envp[line], '=') - envp[line]);
 		line++;
 		if (envp[line] != NULL)
@@ -57,13 +47,13 @@ void	getenv1(char	**envp, t_env *env)
 			env = make_node();
 		}
 	}
-	printnode();
+	//printnode();
 }
 
-void	printnode(t_env	*env)
-{
+// void	printnode(t_env	*env)
+// {
 	
-}
+// }
 
 t_env  *make_node(void)
 {
