@@ -28,27 +28,6 @@ void	cd(char **str, t_env *env)
 	}
 }
 
-void	getenv1(char	**envp, t_env *env)
-{
-	int 	line;
-
-	line = 0;
-	while (envp[line])
-	{
-		printf("%s\n", envp[line++]);
-	}
-	line = 0;
-	while (envp[line])
-	{
-		env->name = ft_substr(envp[line], 0, ft_strchr(envp[line], '=') - envp[line]);
-		line++;
-		if (envp[line] != NULL)
-		{
-			env = make_node();
-		}
-	}
-}
-
 t_env  *make_node(void)
 {
     t_env *new;
