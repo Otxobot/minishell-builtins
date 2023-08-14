@@ -20,5 +20,8 @@ typedef struct	s_env
 void	getenv1(char	**envp, t_env *env);
 void	cd(char **str, t_env *env);
 t_env  *make_node(void);
+void    print_nodes(t_env   *env);
+t_list *ft_lstlast(t_list *lst);
+void    ft_lstadd_back(t_env *lst, t_env *new);
 
 #endif
