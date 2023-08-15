@@ -29,7 +29,10 @@ void    print_nodes(t_env   *env)
     tmp = env;
     while (tmp)
     {
-        printf("%s=%s\n", tmp->name, tmp->value);
+        ft_putstr_fd(tmp->name, 1);
+        write (1, "=", 1);
+        ft_putstr_fd(tmp->value, 1);
+        write (1, "\n", 1);
         tmp = tmp->next;
     }
 }
