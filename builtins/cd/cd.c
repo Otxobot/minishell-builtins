@@ -1,62 +1,58 @@
 #include "../../builtins.h"
 
-//void	cd(char **str, t_env *env);
-//void	getenv1(char	**envp, t_env *env);
-//t_env  *make_node(void);
-
-// int main(int ac, char **av, char **envp)
-// {
-// 	t_env	*env;
-
-// 	//char *s[] ={"ls", "-l",  NULL};
-// 	// int n = 0;
-// 	env = make_node();
-// 	getenv1(envp, env);
-// 	cd(av, env);
-// 	//getenv(envp, env);
-// 	// if (execve("/bin/ls",s , envp) == -1)
-// 	// 	printf("fallo\n");
-// }
-
-void	cd(char **str, t_env *env)
+char		*get_env_name(char *dest, const char *src)
 {
-	if (!str[1])
+	int		i;
+
+	i = 0;
+	while (src[i] && src[i] != '=' && ft_strlen(src) < BUFFER_SIZE)
 	{
-		//printf("%s\n", getcwd(str[1], sizeof(str)));
-		chdir("/Users/abasante");
-		//printf("%s\n", getcwd(str[1], sizeof(str)));
+		dest[i] = src[i];
+		i++;
 	}
+	dest[i] = '\0';
+	return (dest);
 }
 
-t_env  *make_node(void)
+int   ft_strcmp(char *s1, char *s2)
 {
-    t_env *new;
+    int i;
 
-    new = malloc(sizeof(t_env));
-    if (new == NULL)
-        return (NULL);
-    new->name = NULL;
-    new->value = NULL;
-	new->next = NULL;
-    return (new);
+    i = 0;
+    while (s1[i] && s2[i] && s1[i] == s2[i])
+        i++;
+    return (s1[i] - s2[i]);
 }
 
-t_list *ft_lstlast(t_list *lst)
+int     update_oldpwd(t_env *env)
 {
-    if (lst == NULL)
-        return (NULL);
-    while (lst->next != NULL)
+    char    cwd[10000];
+    t_env   *tmp;
+    char    *oldpwd;
+    char    *name;
+
+    name = "OLDPWD";
+    tmp = env;
+    if (getcwd(cwd, sizeof(cwd)) == NULL)
+        return (ERROR);
+    oldpwd = ft_strjoin("OLDPWD=", cwd);
+    while (tmp)
     {
-        lst = lst->next;
+        if (ft_strcmp(tmp->name, name) == 0)
+        {
+            tmp->value = cwd;
+        }
+        tmp = tmp->next;  
     }
-    return (lst);
+    return (SUCCESS);
 }
 
-void    ft_lstadd_back(t_env *lst, t_env *new)
+void	cd(char **args, t_env *env)
 {
-    while (lst != NULL)
+
+    if (!args[1])
     {
-        lst = lst->next;
+        //in this case we have to go to the home directory since the input was only "cd"
+        update_oldpwd(env);
     }
-    lst = new;
 }

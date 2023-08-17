@@ -8,6 +8,7 @@
 
 #define	ERROR 1
 #define	SUCCESS 0
+#define BUFFER_SIZE 4096
 
 typedef struct	s_env
 {
@@ -17,11 +18,13 @@ typedef struct	s_env
 }				t_env;
 
 
-void	getenv1(char	**envp, t_env *env);
+t_env	*get_env(char **envp, t_env *env);
+char		*get_env_name(char *dest, const char *src);
 void	cd(char **str, t_env *env);
 t_env  *make_node(void);
 void    print_nodes(t_env   *env);
 t_list *ft_lstlast(t_list *lst);
 void    ft_lstadd_back(t_env *lst, t_env *new);
+int   ft_strcmp(char *s1, char *s2);
 
 #endif

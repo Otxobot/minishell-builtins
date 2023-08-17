@@ -1,6 +1,6 @@
 #include "../../builtins.h"
 
-void    get_env_name(char **envp, t_env *env)
+t_env *get_env(char **envp, t_env *env)
 {
     t_env   *tmp;
     int i = 0;
@@ -19,7 +19,7 @@ void    get_env_name(char **envp, t_env *env)
             tmp = tmp->next;    
         }
     }
-    print_nodes(env);
+    return (env);
 }
 
 void    print_nodes(t_env   *env)
@@ -37,9 +37,10 @@ void    print_nodes(t_env   *env)
     }
 }
 
-int main(int ac, char **av, char **envp)
-{
-    t_env   *env;
+// int main(int ac, char **av, char **envp)
+// {
+//     t_env   *env;
 
-    get_env_name(envp, env);
-}
+//     env = get_env_name(envp, env);
+//     print_nodes(env);
+// }
