@@ -47,12 +47,51 @@ int     update_oldpwd(t_env *env)
     return (SUCCESS);
 }
 
-void	cd(char **args, t_env *env)
+char     *search_for_home(t_env *env)
 {
+    t_env *tmp;
+    char    *home;
+    char    *ret_path;
 
+    home = "HOME";
+    tmp = env;
+    while (tmp)
+    {
+        if (ft_strcmp(tmp->name, home) == 0)
+        {
+            ret_path = tmp->value;
+        }
+        tmp = tmp->next;
+    }
+    return (ret_path);
+}
+
+int     cd(char **args, t_env *env)
+{
     if (!args[1])
     {
+        char *home_path;
         //in this case we have to go to the home directory since the input was only "cd"
+        //before we do anything, we change the OLDPWD= variable in the environment to the current working directory before changing it, 
+        //which is what this command does.
         update_oldpwd(env);
+        //now i have to find a way to change to the home directory
+        //search_for_home, returns the path in the HOME variable in the environment.
+        home_path = search_for_home(env);
+        if (chdir(home_path) == 0)
+        {
+            ft_putstr_fd("Path changed successfully!\n", 1);
+            return (SUCCESS);
+        }
+        else
+        {
+            ft_putstr_fd("cd: ", 1);
+            if (access(home_path, F_OK) == -1)
+                ft_putstr_fd("no such file or directory: ", 1);
+            else if (access(home_path, R_OK) == -1)
+                ft_putstr_fd("permission denied: ", 1);
+            ft_putstr_fd("Chdir failed\n", 1);
+            return(ERROR);
+        }
     }
 }

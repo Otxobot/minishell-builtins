@@ -36,11 +36,3 @@ void    print_nodes(t_env   *env)
         tmp = tmp->next;
     }
 }
-
-// int main(int ac, char **av, char **envp)
-// {
-//     t_env   *env;
-
-//     env = get_env_name(envp, env);
-//     print_nodes(env);
-// }
