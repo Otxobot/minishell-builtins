@@ -20,12 +20,14 @@ typedef struct	s_env
 
 t_env	*get_env(char **envp, t_env *env);
 char		*get_env_name(char *dest, const char *src);
-int     cd(char **args, t_env *env);
+void     cd(char **args, t_env *env);
 t_env  *make_node(void);
 void    print_nodes(t_env   *env);
 t_list *ft_lstlast(t_list *lst);
 void    ft_lstadd_back(t_env *lst, t_env *new);
 int   	ft_strcmp(char *s1, char *s2);
-char     *search_for_home(t_env *env);
+char     *search_for_var(t_env *env, char *search);
+int    home_case(t_env *env);
+int    slash_case(t_env *env);
 
 #endif
