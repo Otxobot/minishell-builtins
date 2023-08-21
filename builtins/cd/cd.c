@@ -73,7 +73,6 @@ int    slash_case(t_env *env)
     }
     else
     {
-
         if (access("/", F_OK) == -1)
             ft_putstr_fd("no such file or directory: ", 1);
         else if (access("/", R_OK) == -1)
@@ -81,6 +80,50 @@ int    slash_case(t_env *env)
         ft_putstr_fd("Chdir failed\n", 1);
         return(ERROR);
     }
+}
+
+int     absolute_path(t_env *env, char *absolute_path)
+{
+    char    cwd[10000];
+
+    getcwd(cwd, sizeof(cwd));
+    if (chdir(absolute_path) == 0)
+    {
+        update_oldpwd(env, cwd);
+        ft_putstr_fd("Path changed succesfully!\n", 1);
+        return (SUCCESS);
+    }
+    else
+    {
+        if (access(absolute_path, F_OK) == -1)
+            ft_putstr_fd("No such fiile or directory: ", 1);
+        else if (access(absolute_path, R_OK) == -1)
+            ft_putstr_fd("permission denied: ",  1);
+        ft_putstr_fd("Chdir failed\n", 1);
+        return (ERROR);
+    }
+}
+
+void    go_back(t_env   *env)
+{
+    char    cwd[10000];
+
+    getcwd(cwd, sizeof(cwd));
+    if (chdir("..") == 0)
+    {
+        update_oldpwd(env, cwd);
+        ft_putstr_fd("Path changed succesfully!\n", 1);
+        return (SUCCESS);
+    }
+    else
+    {
+        
+    }
+}
+
+void    do_whatever(t_env *env)
+{
+
 }
 
 //now i have to find a way to change to the home directory
@@ -91,11 +134,18 @@ int    slash_case(t_env *env)
 void     cd(char **args, t_env *env)
 {
     char    *s[] = {"ls", "-l", NULL};
+    char    *a[] = {"pwd", NULL, NULL};
 
-    if (!args[1])
+    if (!args[1] || args[1][0] == '~')
         home_case(env);
     else if (args[1][0] == '/')
         slash_case(env);
-    execve("/bin/ls", s, NULL);
-    
+    else if (args[1][0] == '.' && args[1][1] == '.')
+        go_back(env);
+    else if (args[1][0] == '.')
+        do_whatever(env);
+    else if (args[1])
+        absolute_path(env, args[1]);
+    //execve("/bin/ls", s, NULL);
+    execve("/bin/pwd", a, NULL);
 }
