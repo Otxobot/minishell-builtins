@@ -29,5 +29,7 @@ int   	ft_strcmp(char *s1, char *s2);
 char     *search_for_var(t_env *env, char *search);
 int    home_case(t_env *env);
 int    slash_case(t_env *env);
+int    go_back(t_env   *env);
+int     absolute_path(t_env *env, char *absolute_path);
 
 #endif

@@ -104,7 +104,7 @@ int     absolute_path(t_env *env, char *absolute_path)
     }
 }
 
-void    go_back(t_env   *env)
+int    go_back(t_env   *env)
 {
     char    cwd[10000];
 
@@ -117,14 +117,19 @@ void    go_back(t_env   *env)
     }
     else
     {
-        
+        if (access("..", F_OK)  == -1)
+            ft_putstr_fd("No such fiile or directory: ", 1);
+        else if (access("..", R_OK) == -1)
+            ft_putstr_fd("permission denied: ",  1);
+        ft_putstr_fd("Chdir failed\n", 1);
+        return (ERROR);
     }
 }
 
-void    do_whatever(t_env *env)
-{
+// void    do_whatever(t_env *env)
+// {
 
-}
+// }
 
 //now i have to find a way to change to the home directory
 //search_for_home, returns the path in the HOME variable in the environment.
@@ -140,12 +145,12 @@ void     cd(char **args, t_env *env)
         home_case(env);
     else if (args[1][0] == '/')
         slash_case(env);
-    else if (args[1][0] == '.' && args[1][1] == '.')
-        go_back(env);
-    else if (args[1][0] == '.')
-        do_whatever(env);
     else if (args[1])
         absolute_path(env, args[1]);
-    //execve("/bin/ls", s, NULL);
+    else if (args[1][0] == '.' && args[1][1] == '.')
+        go_back(env);
+    // else if (args[1][0] == '.')
+    //     do_whatever(env);
     execve("/bin/pwd", a, NULL);
+    //execve("/bin/ls", s, NULL);
 }
