@@ -49,12 +49,13 @@ int    home_case(t_env *env)
     if (chdir(home_path) == 0)
     {
         update_oldpwd(env, cwd);
-        ft_putstr_fd("Path changed successfully!\n", 1);
+        ft_putstr_fd("Path changed successfully! in home_case\n", 1);
         return (SUCCESS);
     }
     else
     {
         ft_putstr_fd("cd: HOME not set", 1);
+        ft_putstr_fd("Chdir failed in home_case\n", 1);
         return(ERROR);
     }
 }
@@ -68,7 +69,7 @@ int    slash_case(t_env *env)
     if (chdir("/") == 0)
     {
         update_oldpwd(env, cwd);
-        ft_putstr_fd("Path changed succesfully!\n", 1);
+        ft_putstr_fd("Path changed succesfully! in slash_case\n", 1);
         return (SUCCESS);
     }
     else
@@ -77,7 +78,7 @@ int    slash_case(t_env *env)
             ft_putstr_fd("no such file or directory: ", 1);
         else if (access("/", R_OK) == -1)
             ft_putstr_fd("permission denied: ", 1);
-        ft_putstr_fd("Chdir failed\n", 1);
+        ft_putstr_fd("Chdir failed in slash_case\n", 1);
         return(ERROR);
     }
 }
@@ -90,16 +91,16 @@ int     absolute_path(t_env *env, char *absolute_path)
     if (chdir(absolute_path) == 0)
     {
         update_oldpwd(env, cwd);
-        ft_putstr_fd("Path changed succesfully!\n", 1);
+        ft_putstr_fd("Path changed succesfully! in absolute_path\n", 1);
         return (SUCCESS);
     }
     else
     {
         if (access(absolute_path, F_OK) == -1)
-            ft_putstr_fd("No such fiile or directory: ", 1);
+            ft_putstr_fd("No such file or directory: ", 1);
         else if (access(absolute_path, R_OK) == -1)
             ft_putstr_fd("permission denied: ",  1);
-        ft_putstr_fd("Chdir failed\n", 1);
+        ft_putstr_fd("Chdir failed in absolute_path\n", 1);
         return (ERROR);
     }
 }
@@ -112,16 +113,16 @@ int    go_back(t_env   *env)
     if (chdir("..") == 0)
     {
         update_oldpwd(env, cwd);
-        ft_putstr_fd("Path changed succesfully!\n", 1);
+        ft_putstr_fd("Path changed succesfully! in go_back\n", 1);
         return (SUCCESS);
     }
     else
     {
         if (access("..", F_OK)  == -1)
-            ft_putstr_fd("No such fiile or directory: ", 1);
+            ft_putstr_fd("No such file or directory: ", 1);
         else if (access("..", R_OK) == -1)
             ft_putstr_fd("permission denied: ",  1);
-        ft_putstr_fd("Chdir failed\n", 1);
+        ft_putstr_fd("Chdir failed in go_back\n", 1);
         return (ERROR);
     }
 }
@@ -143,7 +144,7 @@ void     cd(char **args, t_env *env)
 
     if (!args[1] || args[1][0] == '~')
         home_case(env);
-    else if (args[1][0] == '/')
+    else if (args[1][0] == '/' && args[1][1] == '\0')
         slash_case(env);
     else if (args[1])
         absolute_path(env, args[1]);
@@ -151,6 +152,6 @@ void     cd(char **args, t_env *env)
         go_back(env);
     // else if (args[1][0] == '.')
     //     do_whatever(env);
-    execve("/bin/pwd", a, NULL);
-    //execve("/bin/ls", s, NULL);
+    //execve("/bin/pwd", a, NULL);
+    execve("/bin/ls", s, NULL);
 }
