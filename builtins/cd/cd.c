@@ -127,16 +127,26 @@ int    go_back(t_env   *env)
     }
 }
 
-// void    do_whatever(t_env *env)
-// {
+int    do_whatever(t_env *env)
+{
+    char    cwd[10000];
 
-// }
+    if (chdir(".") == 0)
+    {
+        ft_putstr_fd("Path not changed but it was a succes in do_whatever aka .", 1);
+        return (SUCCESS);
+    }
+    else
+    {
+        if (access(".", F_OK) == -1)
+            ft_putstr_fd("No such file or directory: ", 1);
+        else if (access("..", R_OK) == -1)
+            ft_putstr_fd("permission denied: ", 1);
+        ft_putstr_fd("Chdir failed in do_whatever\n", 1);
+        return (ERROR);
+    }
+}
 
-//now i have to find a way to change to the home directory
-//search_for_home, returns the path in the HOME variable in the environment.
-//in this case we have to go to the home directory since the input was only "cd"
-//before we do anything, we change the OLDPWD= variable in the environment to the current working directory before changing it, 
-//which is what this command does.
 void     cd(char **args, t_env *env)
 {
     char    *s[] = {"ls", "-l", NULL};
@@ -150,8 +160,8 @@ void     cd(char **args, t_env *env)
         absolute_path(env, args[1]);
     else if (args[1][0] == '.' && args[1][1] == '.')
         go_back(env);
-    // else if (args[1][0] == '.')
-    //     do_whatever(env);
+    else if (args[1][0] == '.')
+        do_whatever(env);
     //execve("/bin/pwd", a, NULL);
-    execve("/bin/ls", s, NULL);
+    //execve("/bin/ls", s, NULL);
 }
